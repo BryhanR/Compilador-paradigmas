@@ -50,6 +50,9 @@ public class JSCall implements JSAst{
 				case "PrintS":
 					out.println("\nPOP A\nPS A");
 				break;
+				case "PrintB":
+					out.println("\nPOP A\nPB A");
+				break;
 				default:
 					out.print("CALL .");
 					f.genCode();

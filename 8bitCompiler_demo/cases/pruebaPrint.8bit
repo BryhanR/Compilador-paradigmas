@@ -2,4 +2,5 @@ fun main()
 {	PrintS("JAJA CABRO");
 	PrintS(" ");
 	PrintN(10);
+	PrintB(true);
 }

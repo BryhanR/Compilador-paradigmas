@@ -59,100 +59,29 @@ PUSH C
 RET
 .main:
 PUSH main_string_1
-CALL .print_string
-POP A
 
+POP A
+PS A
 PUSH 10
 PUSH 5
 CALL .compare
 POP A
 
 PUSH A
-CALL .print_boolean
-POP A
 
+POP A
+PB A
 PUSH main_string_2
-CALL .print_string
-POP A
 
+POP A
+PS A
 PUSH 5
 PUSH 10
 CALL .compare
 POP A
 
 PUSH A
-CALL .print_boolean
-POP A
 
+POP A
+PB A
 HLT
-.print_number:
-POP C
-POP B
-PUSH C
-MOV C, 0
-.print_number_loop_01:
-INC C
-MOV A, B
-DIV 10
-
-PUSH A
-MUL 10
-SUB B, A
-MOV A, B
-POP B
-PUSH A
-CMP B, 0
-JNZ .print_number_loop_01
-.print_number_loop_02:
-
-POP B
-ADD B, 48
-MOV [D], B
-INC D
-DEC C
-CMP C, 0
-JNZ .print_number_loop_02
-.print_number_exit:
-POP C
-PUSH .UNDEF
-PUSH C
-RET
-
-.print_string:
-POP C
-POP B
-PUSH C
-.print_string_loop_01:
-MOV C, [B]
-CMP C, 0
-JE .print_string_exit
-MOV [D], C
-
-INC D
-INC B
-JMP .print_string_loop_01
-.print_string_exit:
-POP C
-PUSH .UNDEF
-PUSH C
-RET
-.print_boolean:
-POP C
-POP A
-PUSH C
-CMP A, 1
-JE .print_boolean_true
-JNE .print_boolean_false
-.print_boolean_true:
- PUSH .boolean_true
-JMP .end_print_boolean
-.print_boolean_false:
-PUSH .boolean_false
-JMP .end_print_boolean
-.end_print_boolean:
-CALL .print_string
-POP A
-POP C
-PUSH .UNDEF
-PUSH C
-RET
