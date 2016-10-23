@@ -18,39 +18,57 @@ public class JSCall implements JSAst{
    
    public void genCode(PrintStream out)
    {
-	   /*out.print("Call Assignment");
-	   f.genCode(out);
-	   out.print("(");
-	   args.stream().forEach(e -> e.genCode(out));
-	   out.print(")");*/
 	   args.stream().forEach(e -> {
 									if((JSCall.class.isInstance(e)))
 									{
-										//out.print((JSCall.class.isInstance(e))? "" : "PUSH ");
-										//out.print((JSId.class.isInstance(e)) ? "[" : "");
 										e.genCode(out);
-										//out.println((JSId.class.isInstance(e)) ? "]" : "");
+										out.println("PUSH A");
 									}
 									else if((JSOperation.class.isInstance(e))) 
 									{
-										//out.print(/*(JSCall.class.isInstance(e))? "" : */"PUSH ");
-										//out.print((JSId.class.isInstance(e)) ? "[" : "");
 										e.genCode(out);
-										//out.println((JSId.class.isInstance(e)) ? "]" : "");
 									}
 									else // se asume que es un parametro constante ej(5) 
 									{
-										out.print(/*(JSCall.class.isInstance(e))? "" : */"PUSH ");
+										out.print("PUSH ");
 										out.print((JSId.class.isInstance(e)) ? "[" : "");
 										e.genCode(out);
+										//out.println();
 										out.println((JSId.class.isInstance(e)) ? "]" : "");
 									}
 									
 									
 									});
-	   out.print("CALL .");
-	   f.genCode();
-	   //out.println("POP A");
-	   out.println();
+									
+		//System.err.println("Call " + ((JSId)f).getValue());	
+
+			switch(((JSId)f).getValue())
+			{
+				case "PrintN":
+					out.println("\nPOP A\nPN A");
+				break;
+				case "PrintS":
+					out.println("\nPOP A\nPS A");
+				break;
+				default:
+					out.print("CALL .");
+					f.genCode();
+					out.println("\nPOP A");
+					out.println();
+					break;
+			}
+		/*if(((JSId)f).getValue().compareTo("Print") == 0)
+		{
+			out.println("\nPOP A\nPN A");
+		}
+			
+	   
+		else
+		{
+			out.print("CALL .");
+			f.genCode();
+			out.println("\nPOP A");
+			out.println();
+		}		*/	
    }
 }

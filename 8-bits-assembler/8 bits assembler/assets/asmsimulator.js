@@ -2,9 +2,9 @@ var app = angular.module('ASMSimulator', []);
 ;app.service('assembler', ['opcodes', function (opcodes) { //patched cloria
     return {
         go: function (input) {
-            // Use https://www.debuggex.com/
+            // Use httPRIN ://www.debuggex.com/
             // Matches: "label: INSTRUCTION (["')OPERAND1(]"'), (["')OPERAND2(]"')
-            // GROUPS:      1       2               3                    7
+            // GROUPRIN :      1       2               3                    7
             var regex = /^[\t ]*(?:([.A-Za-z]\w*)[:])?(?:[\t ]*([A-Za-z]{2,4})(?:[\t ]+(\[([.A-Za-z]\w*((\+|-)\d+)?)\]|\".+?\"|\'.+?\'|[.A-Za-z0-9]\w*)(?:[\t ]*[,][\t ]*(\[([.A-Za-z]\w*((\+|-)\d+)?)\]|\".+?\"|\'.+?\'|[.A-Za-z0-9]\w*))?)?)?/;
 
             // Regex group indexes for operands
@@ -187,6 +187,7 @@ var app = angular.module('ASMSimulator', []);
 
             for (var i = 0, l = lines.length; i < l; i++) {
                 try {
+					var outputActualIndex = 232;
                     var match = regex.exec(lines[i]);
                     if (match[1] !== undefined || match[2] !== undefined) {
                         if (match[1] !== undefined) {
@@ -436,7 +437,6 @@ var app = angular.module('ASMSimulator', []);
                                         opCode = opcodes.PUSH_NUMBER;
                                     else
                                         throw "PUSH does not support this operand";
-
                                     code.push(opCode, p1.value);
                                     break;
                                 case 'POP':
@@ -603,8 +603,46 @@ var app = angular.module('ASMSimulator', []);
 
                                     code.push(opCode, p1.value, p2.value);
                                     break;
+								case 'PS': // PrintString
+									p1 = getValue(match[op1_group]);
+                                    checkNoExtraArg(instr, match[op2_group]);
+									
+									if (p1.type === "register")
+                                        opCode = opcodes.PS_REG;
+                                   // else if (p1.type === "regaddress")
+                                    //    opCode = opcodes.PN_REGADDRESS;
+                                    else if (p1.type === "address")
+                                        opCode = opcodes.PS_ADDRESS;
+                                    else
+                                        throw "PS does not support this operand";
+									//opCode = opcodes.PS ;
+									//console.log("Atendiendo PRIN ..");
+									code.push(opCode, p1.value);									
+									//throw instr + " Used to print Strings " + p1.value + "OUTPUT IP " + outputActualIndex;
+									break;
+								case 'PN': // PrintNumber
+									p1 = getValue(match[op1_group]);
+									checkNoExtraArg(instr, match[op2_group]);
+									
+									if (p1.type === "register")
+                                        opCode = opcodes.PN_REG;
+                                    else if (p1.type === "regaddress")
+                                        opCode = opcodes.PN_REGADDRESS;
+                                    else if (p1.type === "address")
+                                        opCode = opcodes.PN_ADDRESS;
+                                    else if (p1.type === "number")
+                                        opCode = opcodes.PN_NUMBER;
+                                    else
+                                        throw "PN does not support this operand";
+									
+                                  
+									//opCode = opcodes.PN ;
+									//console.log("Atendiendo PN .." + p1.value);
+									code.push(opCode, p1.value);									
+									//throw instr + " Used to print Strings " + p1.value + "OUTPUT IP " + outputActualIndex;
+									break;
                                 default:
-                                    throw "Invalid instruction: " + match[2];
+                                    throw "Invalid instruction: op " + match[2];
                             }
                         }
                     } else {
@@ -1203,6 +1241,113 @@ var app = angular.module('ASMSimulator', []);
                         self.gpr[regTo] = checkOperation(self.gpr[regTo] >>> number);
                         self.ip++;
                         break;
+					case opcodes.PS_REG: // print String desde registro(contiene la dir)
+						//var init = memory.load(++self.ip);
+						//console.log("Visitando PS_REG..");	
+						var d = memory.screenPos;
+						regFrom = checkGPR(memory.load(++self.ip));
+                        var v = self.gpr[regFrom];
+						//console.log("Se obtiene un " + memory.load(v));
+                 																
+						//console.log("Visitando PS_REG..1 => con Elementos " + String.fromCharCode(memory.load(v)));	
+						//var caracter = memory.load(v);//memory.load(v);
+						//console.log("El caracter en 1 => " + caracter + String.fromCharCode(v));
+						//v++;
+						//var count = 0;
+						while(memory.load(v) != 0){
+							 memory.store(d++, memory.load(v));
+							 console.log("Visitando PS_REG.. con Elemento " + String.fromCharCode(memory.load(v)));	
+							 //console.log("Imprimiendo " + v +" Elementos");
+							//regFrom = checkGPR(memory.load(++self.ip));
+						    //v = self.gpr[regFrom++];
+							v++;
+							//caracter = memory.load(v);
+							//count++;
+						}
+						memory.screenPos = d;
+						self.ip++;
+						break;
+					case opcodes.PS_ADDRESS: // print string
+						var init = memory.load(++self.ip);	
+						var d = memory.screenPos;
+											
+						var caracter = memory.load(init++);
+						while(caracter != 0){
+							 memory.store(d++, caracter);
+							var caracter = memory.load(init++);
+						}
+						memory.screenPos = d;
+						self.ip++;
+						break;
+					case opcodes.PN_REG: // print Number desde registro
+						//var init = memory.load(++self.ip);
+						console.log("Visitando PN_REG..");	
+
+						regFrom = checkGPR(memory.load(++self.ip));
+                        var v = self.gpr[regFrom];
+						//console.log("Se obtiene un " );
+                       // self.ip++;
+						var d = memory.screenPos;											
+						var num = v.toString();
+						console.log("Visitando PN_REG.. con " + num.length + "Elementos");	
+						var count = 0;
+						while(count < num.length){
+							 memory.store(d++, parseInt(num[count++])+48);
+							 console.log("Imprimiendo " + count +" Elementos");
+							//var caracter = memory.load(init++);
+						}
+						memory.screenPos = d;
+						self.ip++;
+						break;
+					case opcodes.PN_NUMBER: // print Number desde numero
+						//var init = memory.load(++self.ip);
+						console.log("Visitando PN_NUMBER..");						
+						var d = memory.screenPos;											
+						var num = memory.load(++self.ip).toString();
+						console.log("Visitando PN_NUMBER.. con " + num.length + "Elementos");	
+					    count = 0;
+						while(count < num.length){
+							 memory.store(d++, parseInt(num[count++])+48);
+							 console.log("Imprimiendo " + count +" Elementos");
+							//var caracter = memory.load(init++);
+						}
+						memory.screenPos = d;
+						self.ip++;
+						break;
+					case opcodes.PN_REGADDRESS: // print Number desde la dir de un registro
+						//var init = memory.load(++self.ip);
+						console.log("Visitando PN_REGADDRESS..");	
+						regFrom = memory.load(++self.ip);
+                        v = memory.load(indirectRegisterAddress(regFrom));						
+						var d = memory.screenPos;											
+						 num = v.toString();
+						console.log("Visitando PN_REGADDRESS.. con " + num.length + "Elementos");	
+					    count = 0;
+						while(count < num.length){
+							 memory.store(d++, parseInt(num[count++])+48);
+							 console.log("Imprimiendo " + count +" Elementos");
+							//var caracter = memory.load(init++);
+						}
+						memory.screenPos = d;
+						self.ip++;
+						break;
+					case opcodes.PN_ADDRESS: // print Number desde una direccion
+						//var init = memory.load(++self.ip);
+						console.log("Visitando PN_ADDRESS..");
+						memFrom = memory.load(++self.ip);
+                        v = memory.load(memFrom);						
+					    d = memory.screenPos;											
+					    num = v.toString();
+						console.log("Visitando PN_ADDRESS.. con " + num.length + "Elementos");	
+					    count = 0;
+						while(count < num.length){
+							 memory.store(d++, parseInt(num[count++])+48);
+							 console.log("Imprimiendo " + count +" Elementos");
+							//var caracter = memory.load(init++);
+						}
+						memory.screenPos = d;
+						self.ip++;
+						break;
                     default:
                         throw "Invalid op code: " + instr;
                 }
@@ -1233,6 +1378,7 @@ var app = angular.module('ASMSimulator', []);
 ;app.service('memory', [function () {
     var memory = {
         data: Array(256),
+		screenPos: 232,
         lastAccess: -1,
         load: function (address) {
             var self = this;
@@ -1256,7 +1402,7 @@ var app = angular.module('ASMSimulator', []);
         },
         reset: function () {
             var self = this;
-
+			self.screenPos = 232;
             self.lastAccess = -1;
             for (var i = 0, l = self.data.length; i < l; i++) {
                 self.data[i] = 0;
@@ -1342,7 +1488,13 @@ var app = angular.module('ASMSimulator', []);
         SHR_REG_WITH_REG: 94,
         SHR_REGADDRESS_WITH_REG: 95,
         SHR_ADDRESS_WITH_REG: 96,
-        SHR_NUMBER_WITH_REG: 97
+        SHR_NUMBER_WITH_REG: 97,
+		PS_ADDRESS: 98,	//pinta un string
+		PS_REG: 99,
+		PN_REG: 100,	//pinta un numero
+		PN_NUMBER: 101,
+		PN_REGADDRESS: 102,
+		PN_ADDRESS: 103
     };
 
     return opcodes;
@@ -1364,7 +1516,6 @@ var app = angular.module('ASMSimulator', []);
                      {speed: 16, desc: "16 HZ"}];
     $scope.speed = 4;
     $scope.outputStartIndex = 232;
-
     $scope.code = "; Simple example\n; Writes Hello World to the output\n\n	JMP start\nhello: DB \"Hello World!\" ; Variable\n       DB 0	; String terminator\n\nstart:\n	MOV C, hello    ; Point to var \n	MOV D, 232	; Point to output\n	CALL print\n        HLT             ; Stop execution\n\nprint:			; print(C:*from, D:*to)\n	PUSH A\n	PUSH B\n	MOV B, 0\n.loop:\n	MOV A, [C]	; Get char from var\n	MOV [D], A	; Write to output\n	INC C\n	INC D  \n	CMP B, [C]	; Check if end\n	JNZ .loop	; jump if not\n\n	POP B\n	POP A\n	RET";
 
     $scope.reset = function () {
@@ -1550,7 +1701,7 @@ app.directive('selectLine', [function () {
                         element[0].focus();
                         element[0].select();
                         var range = document.selection.createRange();
-                        range.collapse(true);
+                        range.collase(true);
                         range.moveEnd("character", endPos);
                         range.moveStart("character", startPos);
                         range.select();

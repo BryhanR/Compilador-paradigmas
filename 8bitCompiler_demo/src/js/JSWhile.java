@@ -12,12 +12,6 @@ public class JSWhile implements JSAst {
    }
    
    public void genCode(PrintStream out){
-	   /*out.print("While(");
-	   expression.genCode(out);
-	   out.print("){");
-	   statements.genCode(out);
-	   out.print("}");*/
-	   
 	   
 	   out.println(".while:");
 	   expression.genCode(out);

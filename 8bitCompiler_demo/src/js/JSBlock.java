@@ -21,9 +21,6 @@ public class JSBlock implements JSAst {
    }
    
    public void genCode(PrintStream out){
-	//out.println("BLOCK...");
-	//if(owner != null)
-	//owner.genCode();
        this.members.stream().filter(t -> t != null)
 	                        .forEach( t -> {
 								t.genCode(out);
@@ -32,8 +29,6 @@ public class JSBlock implements JSAst {
 									owner.genCode();
 									out.println("_end");
 								}
-								//out.print((JSReturn.class.isInstance(t))? "" : "");
-								//(JSReturn.class.isInstace(t) == true)? true:false;
 								
 								});
    }

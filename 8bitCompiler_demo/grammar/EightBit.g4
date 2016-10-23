@@ -70,7 +70,7 @@ arithMonom      : arithSingle operTDArithSingle*
 
 arithSingle     :  '-' arithOperation #ArithMinusSingle
                    | '(' expr ')'     #ArithParsSingle
-				   | id? callStatement? /*arguments?*/    #ArithIdSingle // corregir
+				   | id arguments?    #ArithIdSingle 
 				   | constant         #ArithConstantSingle
 				   
 		           

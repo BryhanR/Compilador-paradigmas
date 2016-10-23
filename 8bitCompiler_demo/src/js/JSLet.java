@@ -12,13 +12,7 @@ public class JSLet implements JSAst{
    }
    
    public void genCode(PrintStream out){
-	  // System.err.println("Generando codigo args " + idList.size());
-	    //int []count = {0};
-		//out.println("Let {");
-   //stmts.stream().forEach( t -> {out.print("\t");t.genCode();});
-		//out.println("\n}");
 		stmts.stream().forEach( t -> {t.genCode();});
 		this.statements.genCode(out);
-	//out.println("args");
    }
 }

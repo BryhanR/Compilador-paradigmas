@@ -603,7 +603,7 @@ app.service('assembler', ['opcodes', function (opcodes) { //patched cloria
                                     code.push(opCode, p1.value, p2.value);
                                     break;
                                 default:
-                                    throw "Invalid instruction: " + match[2];
+                                    throw "Invalid instruction: dcd" + match[2];
                             }
                         }
                     } else {
