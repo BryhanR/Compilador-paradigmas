@@ -12,31 +12,23 @@ public class JSIf implements JSAst{
    }
    @Override
    public void genCode(PrintStream out){
-     //out.format("if("); 
 	 this.c.genCode(out); 
 	 genHead(out);
-	 //out.println("JA .then_if\n");
-	// out.format("){"); 
 	if(t != null)
 	{
 		out.println(".then_if:");
 		this.t.genCode(out);
 	}
-	out.println(".else_if:");
-	
-	//out.format("}"); 	 
+	out.println(".else_if:"); 
 	 if(e != null)
 	 {
-		 //out.format("else {"); 
 		this.e.genCode(out);
-		 //out.format("}");
 	 }	
    }
    
    public void genHead(PrintStream out)
    {
 	   String op = ((JSId)((JSOperation)c).getOper()).getValue();
-		//System.err.println("El operador evaluedo en el if es: " + op);
 	   switch(((JSId)((JSOperation)c).getOper()).getValue())
 	   {
 		   case ">":

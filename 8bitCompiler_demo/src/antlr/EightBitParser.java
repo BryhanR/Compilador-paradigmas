@@ -1138,34 +1138,12 @@ public class EightBitParser extends Parser {
 		try {
 			setState(184);
 			switch (_input.LA(1)) {
-			case EOF:
-			case T__0:
 			case T__1:
-			case T__2:
-			case T__3:
-			case T__4:
-			case T__6:
-			case T__7:
-			case T__9:
-			case T__10:
-			case T__11:
-			case T__12:
-			case T__13:
-			case T__14:
-			case T__15:
-			case T__16:
 			case T__17:
 			case NUMBER:
 			case STRING:
-			case EQ:
-			case NEQ:
-			case LEQ:
-			case OR:
 			case TRUE:
 			case FALSE:
-			case MUL:
-			case DIV:
-			case ADD:
 			case SUB:
 			case ID:
 				enterOuterAlt(_localctx, 1);
@@ -1417,8 +1395,8 @@ public class EightBitParser extends Parser {
 		public IdContext id() {
 			return getRuleContext(IdContext.class,0);
 		}
-		public CallStatementContext callStatement() {
-			return getRuleContext(CallStatementContext.class,0);
+		public ArgumentsContext arguments() {
+			return getRuleContext(ArgumentsContext.class,0);
 		}
 		public ArithIdSingleContext(ArithSingleContext ctx) { copyFrom(ctx); }
 		@Override
@@ -1442,11 +1420,11 @@ public class EightBitParser extends Parser {
 	public final ArithSingleContext arithSingle() throws RecognitionException {
 		ArithSingleContext _localctx = new ArithSingleContext(_ctx, getState());
 		enterRule(_localctx, 46, RULE_arithSingle);
+		int _la;
 		try {
-			setState(216);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,20,_ctx) ) {
-			case 1:
+			setState(214);
+			switch (_input.LA(1)) {
+			case SUB:
 				_localctx = new ArithMinusSingleContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
@@ -1456,7 +1434,7 @@ public class EightBitParser extends Parser {
 				arithOperation();
 				}
 				break;
-			case 2:
+			case T__1:
 				_localctx = new ArithParsSingleContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
@@ -1468,40 +1446,37 @@ public class EightBitParser extends Parser {
 				match(T__2);
 				}
 				break;
-			case 3:
+			case ID:
 				_localctx = new ArithIdSingleContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(210);
-				_errHandler.sync(this);
-				switch ( getInterpreter().adaptivePredict(_input,18,_ctx) ) {
-				case 1:
+				setState(209);
+				id();
+				setState(211);
+				_la = _input.LA(1);
+				if (_la==T__1) {
 					{
-					setState(209);
-					id();
+					setState(210);
+					arguments();
 					}
-					break;
 				}
-				setState(213);
-				_errHandler.sync(this);
-				switch ( getInterpreter().adaptivePredict(_input,19,_ctx) ) {
-				case 1:
-					{
-					setState(212);
-					callStatement();
-					}
-					break;
-				}
+
 				}
 				break;
-			case 4:
+			case T__17:
+			case NUMBER:
+			case STRING:
+			case TRUE:
+			case FALSE:
 				_localctx = new ArithConstantSingleContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(215);
+				setState(213);
 				constant();
 				}
 				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -1539,7 +1514,7 @@ public class EightBitParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			{
-			setState(218);
+			setState(216);
 			((OperTDArithSingleContext)_localctx).oper = _input.LT(1);
 			_la = _input.LA(1);
 			if ( !(_la==MUL || _la==DIV) ) {
@@ -1548,7 +1523,7 @@ public class EightBitParser extends Parser {
 				consume();
 			}
 			}
-			setState(219);
+			setState(217);
 			arithSingle();
 			}
 		}
@@ -1621,13 +1596,13 @@ public class EightBitParser extends Parser {
 		ConstantContext _localctx = new ConstantContext(_ctx, getState());
 		enterRule(_localctx, 50, RULE_constant);
 		try {
-			setState(226);
+			setState(224);
 			switch (_input.LA(1)) {
 			case NUMBER:
 				_localctx = new ExprNumContext(_localctx);
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(221);
+				setState(219);
 				match(NUMBER);
 				}
 				break;
@@ -1635,7 +1610,7 @@ public class EightBitParser extends Parser {
 				_localctx = new ExprStringContext(_localctx);
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(222);
+				setState(220);
 				match(STRING);
 				}
 				break;
@@ -1643,7 +1618,7 @@ public class EightBitParser extends Parser {
 				_localctx = new ExprTrueContext(_localctx);
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(223);
+				setState(221);
 				match(TRUE);
 				}
 				break;
@@ -1651,7 +1626,7 @@ public class EightBitParser extends Parser {
 				_localctx = new ExprFalseContext(_localctx);
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(224);
+				setState(222);
 				match(FALSE);
 				}
 				break;
@@ -1659,7 +1634,7 @@ public class EightBitParser extends Parser {
 				_localctx = new ExprNullContext(_localctx);
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(225);
+				setState(223);
 				match(T__17);
 				}
 				break;
@@ -1696,22 +1671,22 @@ public class EightBitParser extends Parser {
 	public final ArgumentsContext arguments() throws RecognitionException {
 		ArgumentsContext _localctx = new ArgumentsContext(_ctx, getState());
 		enterRule(_localctx, 52, RULE_arguments);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(228);
+			setState(226);
 			match(T__1);
-			setState(230);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
-			case 1:
+			setState(228);
+			_la = _input.LA(1);
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__1) | (1L << T__17) | (1L << NUMBER) | (1L << STRING) | (1L << NOT) | (1L << TRUE) | (1L << FALSE) | (1L << SUB) | (1L << ID))) != 0)) {
 				{
-				setState(229);
+				setState(227);
 				args();
 				}
-				break;
 			}
-			setState(232);
+
+			setState(230);
 			match(T__2);
 			}
 		}
@@ -1751,21 +1726,21 @@ public class EightBitParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(234);
+			setState(232);
 			expr();
-			setState(239);
+			setState(237);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			while (_la==T__3) {
 				{
 				{
-				setState(235);
+				setState(233);
 				match(T__3);
-				setState(236);
+				setState(234);
 				expr();
 				}
 				}
-				setState(241);
+				setState(239);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
@@ -1783,7 +1758,7 @@ public class EightBitParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3%\u00f5\4\2\t\2\4"+
+		"\3\u0430\ud6d1\u8206\uad2d\u4417\uaef1\u8d80\uaadd\3%\u00f3\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -1799,41 +1774,41 @@ public class EightBitParser extends Parser {
 		"\24\16\24\u00ae\13\24\3\25\3\25\3\25\3\25\7\25\u00b4\n\25\f\25\16\25\u00b7"+
 		"\13\25\3\25\3\25\5\25\u00bb\n\25\3\26\3\26\3\27\3\27\3\27\7\27\u00c2\n"+
 		"\27\f\27\16\27\u00c5\13\27\3\30\3\30\7\30\u00c9\n\30\f\30\16\30\u00cc"+
-		"\13\30\3\31\3\31\3\31\3\31\3\31\3\31\3\31\5\31\u00d5\n\31\3\31\5\31\u00d8"+
-		"\n\31\3\31\5\31\u00db\n\31\3\32\3\32\3\32\3\33\3\33\3\33\3\33\3\33\5\33"+
-		"\u00e5\n\33\3\34\3\34\5\34\u00e9\n\34\3\34\3\34\3\35\3\35\3\35\7\35\u00f0"+
-		"\n\35\f\35\16\35\u00f3\13\35\3\35\2\2\36\2\4\6\b\n\f\16\20\22\24\26\30"+
-		"\32\34\36 \"$&(*,.\60\62\64\668\2\5\4\2\21\23\30\32\3\2 !\3\2\36\37\u00fa"+
-		"\2;\3\2\2\2\4?\3\2\2\2\6D\3\2\2\2\bJ\3\2\2\2\nR\3\2\2\2\fW\3\2\2\2\16"+
-		"Y\3\2\2\2\20[\3\2\2\2\22c\3\2\2\2\24q\3\2\2\2\26s\3\2\2\2\30w\3\2\2\2"+
-		"\32}\3\2\2\2\34\u0086\3\2\2\2\36\u0089\3\2\2\2 \u008c\3\2\2\2\"\u0092"+
-		"\3\2\2\2$\u009f\3\2\2\2&\u00a7\3\2\2\2(\u00ba\3\2\2\2*\u00bc\3\2\2\2,"+
-		"\u00be\3\2\2\2.\u00c6\3\2\2\2\60\u00da\3\2\2\2\62\u00dc\3\2\2\2\64\u00e4"+
-		"\3\2\2\2\66\u00e6\3\2\2\28\u00ec\3\2\2\2:<\5\4\3\2;:\3\2\2\2<=\3\2\2\2"+
-		"=;\3\2\2\2=>\3\2\2\2>\3\3\2\2\2?@\7\3\2\2@A\5\n\6\2AB\5\6\4\2BC\5\f\7"+
-		"\2C\5\3\2\2\2DF\7\4\2\2EG\5\b\5\2FE\3\2\2\2FG\3\2\2\2GH\3\2\2\2HI\7\5"+
-		"\2\2I\7\3\2\2\2JO\5\n\6\2KL\7\6\2\2LN\5\n\6\2MK\3\2\2\2NQ\3\2\2\2OM\3"+
-		"\2\2\2OP\3\2\2\2P\t\3\2\2\2QO\3\2\2\2RS\7\"\2\2S\13\3\2\2\2TX\5\20\t\2"+
-		"UX\5\24\13\2VX\5\16\b\2WT\3\2\2\2WU\3\2\2\2WV\3\2\2\2X\r\3\2\2\2YZ\7\7"+
-		"\2\2Z\17\3\2\2\2[\\\7\b\2\2\\^\7\t\2\2]_\5\22\n\2^]\3\2\2\2^_\3\2\2\2"+
-		"_`\3\2\2\2`a\7\n\2\2ab\5\24\13\2b\21\3\2\2\2ch\5\26\f\2de\7\7\2\2eg\5"+
-		"\26\f\2fd\3\2\2\2gj\3\2\2\2hf\3\2\2\2hi\3\2\2\2i\23\3\2\2\2jh\3\2\2\2"+
-		"kr\5\26\f\2lr\5\30\r\2mr\5\32\16\2nr\5\34\17\2or\5\36\20\2pr\5 \21\2q"+
-		"k\3\2\2\2ql\3\2\2\2qm\3\2\2\2qn\3\2\2\2qo\3\2\2\2qp\3\2\2\2r\25\3\2\2"+
-		"\2st\5\n\6\2tu\7\13\2\2uv\5$\23\2v\27\3\2\2\2wx\7\f\2\2xy\7\4\2\2yz\5"+
-		"$\23\2z{\7\5\2\2{|\5\24\13\2|\31\3\2\2\2}~\7\r\2\2~\177\7\4\2\2\177\u0080"+
-		"\5$\23\2\u0080\u0081\7\5\2\2\u0081\u0084\5\24\13\2\u0082\u0083\7\16\2"+
-		"\2\u0083\u0085\5\24\13\2\u0084\u0082\3\2\2\2\u0084\u0085\3\2\2\2\u0085"+
-		"\33\3\2\2\2\u0086\u0087\7\"\2\2\u0087\u0088\5\66\34\2\u0088\35\3\2\2\2"+
-		"\u0089\u008a\7\17\2\2\u008a\u008b\5$\23\2\u008b\37\3\2\2\2\u008c\u008e"+
-		"\7\t\2\2\u008d\u008f\5\"\22\2\u008e\u008d\3\2\2\2\u008e\u008f\3\2\2\2"+
-		"\u008f\u0090\3\2\2\2\u0090\u0091\7\n\2\2\u0091!\3\2\2\2\u0092\u0094\5"+
-		"\24\13\2\u0093\u0095\7\7\2\2\u0094\u0093\3\2\2\2\u0094\u0095\3\2\2\2\u0095"+
-		"\u009c\3\2\2\2\u0096\u0098\5\24\13\2\u0097\u0099\7\7\2\2\u0098\u0097\3"+
-		"\2\2\2\u0098\u0099\3\2\2\2\u0099\u009b\3\2\2\2\u009a\u0096\3\2\2\2\u009b"+
-		"\u009e\3\2\2\2\u009c\u009a\3\2\2\2\u009c\u009d\3\2\2\2\u009d#\3\2\2\2"+
-		"\u009e\u009c\3\2\2\2\u009f\u00a4\5&\24\2\u00a0\u00a1\7\33\2\2\u00a1\u00a3"+
-		"\5&\24\2\u00a2\u00a0\3\2\2\2\u00a3\u00a6\3\2\2\2\u00a4\u00a2\3\2\2\2\u00a4"+
+		"\13\30\3\31\3\31\3\31\3\31\3\31\3\31\3\31\3\31\5\31\u00d6\n\31\3\31\5"+
+		"\31\u00d9\n\31\3\32\3\32\3\32\3\33\3\33\3\33\3\33\3\33\5\33\u00e3\n\33"+
+		"\3\34\3\34\5\34\u00e7\n\34\3\34\3\34\3\35\3\35\3\35\7\35\u00ee\n\35\f"+
+		"\35\16\35\u00f1\13\35\3\35\2\2\36\2\4\6\b\n\f\16\20\22\24\26\30\32\34"+
+		"\36 \"$&(*,.\60\62\64\668\2\5\4\2\21\23\30\32\3\2 !\3\2\36\37\u00f7\2"+
+		";\3\2\2\2\4?\3\2\2\2\6D\3\2\2\2\bJ\3\2\2\2\nR\3\2\2\2\fW\3\2\2\2\16Y\3"+
+		"\2\2\2\20[\3\2\2\2\22c\3\2\2\2\24q\3\2\2\2\26s\3\2\2\2\30w\3\2\2\2\32"+
+		"}\3\2\2\2\34\u0086\3\2\2\2\36\u0089\3\2\2\2 \u008c\3\2\2\2\"\u0092\3\2"+
+		"\2\2$\u009f\3\2\2\2&\u00a7\3\2\2\2(\u00ba\3\2\2\2*\u00bc\3\2\2\2,\u00be"+
+		"\3\2\2\2.\u00c6\3\2\2\2\60\u00d8\3\2\2\2\62\u00da\3\2\2\2\64\u00e2\3\2"+
+		"\2\2\66\u00e4\3\2\2\28\u00ea\3\2\2\2:<\5\4\3\2;:\3\2\2\2<=\3\2\2\2=;\3"+
+		"\2\2\2=>\3\2\2\2>\3\3\2\2\2?@\7\3\2\2@A\5\n\6\2AB\5\6\4\2BC\5\f\7\2C\5"+
+		"\3\2\2\2DF\7\4\2\2EG\5\b\5\2FE\3\2\2\2FG\3\2\2\2GH\3\2\2\2HI\7\5\2\2I"+
+		"\7\3\2\2\2JO\5\n\6\2KL\7\6\2\2LN\5\n\6\2MK\3\2\2\2NQ\3\2\2\2OM\3\2\2\2"+
+		"OP\3\2\2\2P\t\3\2\2\2QO\3\2\2\2RS\7\"\2\2S\13\3\2\2\2TX\5\20\t\2UX\5\24"+
+		"\13\2VX\5\16\b\2WT\3\2\2\2WU\3\2\2\2WV\3\2\2\2X\r\3\2\2\2YZ\7\7\2\2Z\17"+
+		"\3\2\2\2[\\\7\b\2\2\\^\7\t\2\2]_\5\22\n\2^]\3\2\2\2^_\3\2\2\2_`\3\2\2"+
+		"\2`a\7\n\2\2ab\5\24\13\2b\21\3\2\2\2ch\5\26\f\2de\7\7\2\2eg\5\26\f\2f"+
+		"d\3\2\2\2gj\3\2\2\2hf\3\2\2\2hi\3\2\2\2i\23\3\2\2\2jh\3\2\2\2kr\5\26\f"+
+		"\2lr\5\30\r\2mr\5\32\16\2nr\5\34\17\2or\5\36\20\2pr\5 \21\2qk\3\2\2\2"+
+		"ql\3\2\2\2qm\3\2\2\2qn\3\2\2\2qo\3\2\2\2qp\3\2\2\2r\25\3\2\2\2st\5\n\6"+
+		"\2tu\7\13\2\2uv\5$\23\2v\27\3\2\2\2wx\7\f\2\2xy\7\4\2\2yz\5$\23\2z{\7"+
+		"\5\2\2{|\5\24\13\2|\31\3\2\2\2}~\7\r\2\2~\177\7\4\2\2\177\u0080\5$\23"+
+		"\2\u0080\u0081\7\5\2\2\u0081\u0084\5\24\13\2\u0082\u0083\7\16\2\2\u0083"+
+		"\u0085\5\24\13\2\u0084\u0082\3\2\2\2\u0084\u0085\3\2\2\2\u0085\33\3\2"+
+		"\2\2\u0086\u0087\7\"\2\2\u0087\u0088\5\66\34\2\u0088\35\3\2\2\2\u0089"+
+		"\u008a\7\17\2\2\u008a\u008b\5$\23\2\u008b\37\3\2\2\2\u008c\u008e\7\t\2"+
+		"\2\u008d\u008f\5\"\22\2\u008e\u008d\3\2\2\2\u008e\u008f\3\2\2\2\u008f"+
+		"\u0090\3\2\2\2\u0090\u0091\7\n\2\2\u0091!\3\2\2\2\u0092\u0094\5\24\13"+
+		"\2\u0093\u0095\7\7\2\2\u0094\u0093\3\2\2\2\u0094\u0095\3\2\2\2\u0095\u009c"+
+		"\3\2\2\2\u0096\u0098\5\24\13\2\u0097\u0099\7\7\2\2\u0098\u0097\3\2\2\2"+
+		"\u0098\u0099\3\2\2\2\u0099\u009b\3\2\2\2\u009a\u0096\3\2\2\2\u009b\u009e"+
+		"\3\2\2\2\u009c\u009a\3\2\2\2\u009c\u009d\3\2\2\2\u009d#\3\2\2\2\u009e"+
+		"\u009c\3\2\2\2\u009f\u00a4\5&\24\2\u00a0\u00a1\7\33\2\2\u00a1\u00a3\5"+
+		"&\24\2\u00a2\u00a0\3\2\2\2\u00a3\u00a6\3\2\2\2\u00a4\u00a2\3\2\2\2\u00a4"+
 		"\u00a5\3\2\2\2\u00a5%\3\2\2\2\u00a6\u00a4\3\2\2\2\u00a7\u00ac\5(\25\2"+
 		"\u00a8\u00a9\7\20\2\2\u00a9\u00ab\5(\25\2\u00aa\u00a8\3\2\2\2\u00ab\u00ae"+
 		"\3\2\2\2\u00ac\u00aa\3\2\2\2\u00ac\u00ad\3\2\2\2\u00ad\'\3\2\2\2\u00ae"+
@@ -1846,23 +1821,22 @@ public class EightBitParser extends Parser {
 		"\2\2\u00c2\u00c5\3\2\2\2\u00c3\u00c1\3\2\2\2\u00c3\u00c4\3\2\2\2\u00c4"+
 		"-\3\2\2\2\u00c5\u00c3\3\2\2\2\u00c6\u00ca\5\60\31\2\u00c7\u00c9\5\62\32"+
 		"\2\u00c8\u00c7\3\2\2\2\u00c9\u00cc\3\2\2\2\u00ca\u00c8\3\2\2\2\u00ca\u00cb"+
-		"\3\2\2\2\u00cb/\3\2\2\2\u00cc\u00ca\3\2\2\2\u00cd\u00ce\7!\2\2\u00ce\u00db"+
+		"\3\2\2\2\u00cb/\3\2\2\2\u00cc\u00ca\3\2\2\2\u00cd\u00ce\7!\2\2\u00ce\u00d9"+
 		"\5,\27\2\u00cf\u00d0\7\4\2\2\u00d0\u00d1\5$\23\2\u00d1\u00d2\7\5\2\2\u00d2"+
-		"\u00db\3\2\2\2\u00d3\u00d5\5\n\6\2\u00d4\u00d3\3\2\2\2\u00d4\u00d5\3\2"+
-		"\2\2\u00d5\u00d7\3\2\2\2\u00d6\u00d8\5\34\17\2\u00d7\u00d6\3\2\2\2\u00d7"+
-		"\u00d8\3\2\2\2\u00d8\u00db\3\2\2\2\u00d9\u00db\5\64\33\2\u00da\u00cd\3"+
-		"\2\2\2\u00da\u00cf\3\2\2\2\u00da\u00d4\3\2\2\2\u00da\u00d9\3\2\2\2\u00db"+
-		"\61\3\2\2\2\u00dc\u00dd\t\4\2\2\u00dd\u00de\5\60\31\2\u00de\63\3\2\2\2"+
-		"\u00df\u00e5\7\25\2\2\u00e0\u00e5\7\26\2\2\u00e1\u00e5\7\34\2\2\u00e2"+
-		"\u00e5\7\35\2\2\u00e3\u00e5\7\24\2\2\u00e4\u00df\3\2\2\2\u00e4\u00e0\3"+
-		"\2\2\2\u00e4\u00e1\3\2\2\2\u00e4\u00e2\3\2\2\2\u00e4\u00e3\3\2\2\2\u00e5"+
-		"\65\3\2\2\2\u00e6\u00e8\7\4\2\2\u00e7\u00e9\58\35\2\u00e8\u00e7\3\2\2"+
-		"\2\u00e8\u00e9\3\2\2\2\u00e9\u00ea\3\2\2\2\u00ea\u00eb\7\5\2\2\u00eb\67"+
-		"\3\2\2\2\u00ec\u00f1\5$\23\2\u00ed\u00ee\7\6\2\2\u00ee\u00f0\5$\23\2\u00ef"+
-		"\u00ed\3\2\2\2\u00f0\u00f3\3\2\2\2\u00f1\u00ef\3\2\2\2\u00f1\u00f2\3\2"+
-		"\2\2\u00f29\3\2\2\2\u00f3\u00f1\3\2\2\2\32=FOW^hq\u0084\u008e\u0094\u0098"+
-		"\u009c\u00a4\u00ac\u00b5\u00ba\u00c3\u00ca\u00d4\u00d7\u00da\u00e4\u00e8"+
-		"\u00f1";
+		"\u00d9\3\2\2\2\u00d3\u00d5\5\n\6\2\u00d4\u00d6\5\66\34\2\u00d5\u00d4\3"+
+		"\2\2\2\u00d5\u00d6\3\2\2\2\u00d6\u00d9\3\2\2\2\u00d7\u00d9\5\64\33\2\u00d8"+
+		"\u00cd\3\2\2\2\u00d8\u00cf\3\2\2\2\u00d8\u00d3\3\2\2\2\u00d8\u00d7\3\2"+
+		"\2\2\u00d9\61\3\2\2\2\u00da\u00db\t\4\2\2\u00db\u00dc\5\60\31\2\u00dc"+
+		"\63\3\2\2\2\u00dd\u00e3\7\25\2\2\u00de\u00e3\7\26\2\2\u00df\u00e3\7\34"+
+		"\2\2\u00e0\u00e3\7\35\2\2\u00e1\u00e3\7\24\2\2\u00e2\u00dd\3\2\2\2\u00e2"+
+		"\u00de\3\2\2\2\u00e2\u00df\3\2\2\2\u00e2\u00e0\3\2\2\2\u00e2\u00e1\3\2"+
+		"\2\2\u00e3\65\3\2\2\2\u00e4\u00e6\7\4\2\2\u00e5\u00e7\58\35\2\u00e6\u00e5"+
+		"\3\2\2\2\u00e6\u00e7\3\2\2\2\u00e7\u00e8\3\2\2\2\u00e8\u00e9\7\5\2\2\u00e9"+
+		"\67\3\2\2\2\u00ea\u00ef\5$\23\2\u00eb\u00ec\7\6\2\2\u00ec\u00ee\5$\23"+
+		"\2\u00ed\u00eb\3\2\2\2\u00ee\u00f1\3\2\2\2\u00ef\u00ed\3\2\2\2\u00ef\u00f0"+
+		"\3\2\2\2\u00f09\3\2\2\2\u00f1\u00ef\3\2\2\2\31=FOW^hq\u0084\u008e\u0094"+
+		"\u0098\u009c\u00a4\u00ac\u00b5\u00ba\u00c3\u00ca\u00d5\u00d8\u00e2\u00e6"+
+		"\u00ef";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

@@ -1,0 +1,5 @@
+fun main()
+{	PrintS("JAJA CABRO");
+	PrintS(" ");
+	PrintN(10);
+}

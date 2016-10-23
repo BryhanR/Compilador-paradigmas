@@ -1,0 +1,6 @@
+fun salute(s){
+   PrintS(s);
+}
+fun main(){
+   salute("Hello 666!");
+}

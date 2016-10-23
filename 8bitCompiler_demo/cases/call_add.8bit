@@ -1,0 +1,9 @@
+fun add(x, y){
+   return x + y;
+}
+
+fun main(){
+   PrintS("10+56=");
+   PrintN(add(10, 56));
+
+}

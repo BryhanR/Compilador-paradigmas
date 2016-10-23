@@ -19,7 +19,7 @@ public interface JSEmiter{
    
    default JSId  ID(String value){return new JSId(value);}
    
-   default JSFunction FUNCTION(JSId id, /*List<JSAst>*/ JSAst formals, JSAst body){
+   default JSFunction FUNCTION(JSId id, JSAst formals, JSAst body){
            return new JSFunction(id, formals, body);
    }
    
@@ -35,18 +35,14 @@ public interface JSEmiter{
 	   return new JSOperation(oper, left, right);
    }
    default JSAst FOLD_LEFT(JSAst left, JSAst right){
-	   // Expected right = OPERATION(oper, null, r)
 	   JSOperation rightOperation = (JSOperation)right;
-	   // Returns OPERATION(oper, left, r)
 	   return new JSOperation(rightOperation.getOper(), left, rightOperation.getRight());
    }
    default JSAst ASSIGN(JSAst left, JSAst right){
 	   return new JSAssign(left, right);
    }
    default List<JSAst> ARGS(List<JSAst>  args){ return args;}
-   //default List<JSAst> ARGS(JSAst... args){ return Arrays.asList(args);}
-   //default List<JSAst> FORMALS(JSAst... args){ return Arrays.asList(args);}
-   default JSAst FORMALS(/*JSAst...*/ List<JSAst> args){ return new JSFormals (args/*Arrays.asList(args)*/);}
+   default JSAst FORMALS(List<JSAst> args){ return new JSFormals (args);}
    default JSAst FORMALS(){ return new JSFormals (Arrays.asList());}
    
    
