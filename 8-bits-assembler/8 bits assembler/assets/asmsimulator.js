@@ -641,6 +641,27 @@ var app = angular.module('ASMSimulator', []);
 									code.push(opCode, p1.value);									
 									//throw instr + " Used to print Strings " + p1.value + "OUTPUT IP " + outputActualIndex;
 									break;
+								case 'PB': // PrintBoolean
+									p1 = getValue(match[op1_group]);
+									checkNoExtraArg(instr, match[op2_group]);
+									
+									if (p1.type === "register")
+                                        opCode = opcodes.PB_REG;
+                                    /*else if (p1.type === "regaddress")
+                                        opCode = opcodes.PN_REGADDRESS;
+                                    else if (p1.type === "address")
+                                        opCode = opcodes.PN_ADDRESS;
+                                    else if (p1.type === "number")
+                                        opCode = opcodes.PN_NUMBER;*/
+                                    else
+                                        throw "PN does not support this operand";
+									
+                                  
+									//opCode = opcodes.PN ;
+									//console.log("Atendiendo PN .." + p1.value);
+									code.push(opCode, p1.value);									
+									//throw instr + " Used to print Strings " + p1.value + "OUTPUT IP " + outputActualIndex;
+									break;
                                 default:
                                     throw "Invalid instruction: op " + match[2];
                             }
@@ -1348,6 +1369,30 @@ var app = angular.module('ASMSimulator', []);
 						memory.screenPos = d;
 						self.ip++;
 						break;
+						
+					case opcodes.PB_REG: // print Boolean desde registro
+						//var init = memory.load(++self.ip);
+						//console.log("Visitando PB_REG..");	
+
+						regFrom = checkGPR(memory.load(++self.ip));
+                        var v = self.gpr[regFrom];
+						//console.log("Se obtiene un " );
+                       // self.ip++;
+						var d = memory.screenPos;											
+						var num = v.toString();
+						//console.log("Visitando PB_REG.. con " + num.length + "Elementos de " + num);	
+						var bol = (num == 1)?"TRUE":"FALSE";
+						//memory.store(d++, parseInt(num[count++])+48);
+						var count = 0;
+						while(count < bol.length){
+							 memory.store(d++, bol.charCodeAt(count));
+							// console.log("Imprimiendo " + count +" Elementos");
+							 count++;
+							//var caracter = memory.load(init++);
+						}
+						memory.screenPos = d;
+						self.ip++;
+						break;
                     default:
                         throw "Invalid op code: " + instr;
                 }
@@ -1494,7 +1539,8 @@ var app = angular.module('ASMSimulator', []);
 		PN_REG: 100,	//pinta un numero
 		PN_NUMBER: 101,
 		PN_REGADDRESS: 102,
-		PN_ADDRESS: 103
+		PN_ADDRESS: 103,
+		PB_REG: 104 // pinta booleano
     };
 
     return opcodes;

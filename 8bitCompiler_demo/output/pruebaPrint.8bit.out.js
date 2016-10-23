@@ -31,4 +31,8 @@ PUSH 10
 
 POP A
 PN A
+PUSH 1
+
+POP A
+PB A
 HLT

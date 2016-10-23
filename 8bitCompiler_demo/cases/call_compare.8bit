@@ -4,12 +4,8 @@ fun compare(x, y){
 }
 
 fun main(){
-   print_string("10>5=");
-   print_boolean(compare(10, 5));
-   print_string(" 5>10=")
-   print_boolean(compare(5, 10));
+   PrintS("10>5=");
+   PrintB(compare(10, 5));
+   PrintS(" 5>10=")
+   PrintB(compare(5, 10));
 }
-/*
-fun main(){
-   print_boolean(false);
-}*/
