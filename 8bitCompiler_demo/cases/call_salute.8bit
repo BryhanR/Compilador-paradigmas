@@ -1,5 +1,5 @@
 fun salute(s){
-   PrintS(s);
+   print_string(s);
 }
 fun main(){
    salute("Hello 666!");

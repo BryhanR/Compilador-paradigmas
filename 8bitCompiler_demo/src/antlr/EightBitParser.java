@@ -366,34 +366,29 @@ public class EightBitParser extends Parser {
 		enterRule(_localctx, 10, RULE_funBody);
 		try {
 			setState(85);
-			switch (_input.LA(1)) {
-			case T__5:
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
+			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
 				setState(82);
 				letStatement();
 				}
 				break;
-			case T__6:
-			case T__9:
-			case T__10:
-			case T__12:
-			case ID:
+			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
 				setState(83);
 				closedStatement();
 				}
 				break;
-			case T__4:
+			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(84);
 				emptyStatement();
 				}
 				break;
-			default:
-				throw new NoViableAltException(this);
 			}
 		}
 		catch (RecognitionException re) {
@@ -520,24 +515,20 @@ public class EightBitParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(97);
-			assignStatement();
-			setState(102);
+			setState(98); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (_la==T__4) {
+			do {
 				{
 				{
-				setState(98);
-				match(T__4);
-				setState(99);
+				setState(97);
 				assignStatement();
 				}
 				}
-				setState(104);
+				setState(100); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-			}
+			} while ( _la==ID );
 			}
 		}
 		catch (RecognitionException re) {
@@ -570,6 +561,9 @@ public class EightBitParser extends Parser {
 		public BlockStatementContext blockStatement() {
 			return getRuleContext(BlockStatementContext.class,0);
 		}
+		public LetStatementContext letStatement() {
+			return getRuleContext(LetStatementContext.class,0);
+		}
 		public ClosedStatementContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -585,49 +579,56 @@ public class EightBitParser extends Parser {
 		ClosedStatementContext _localctx = new ClosedStatementContext(_ctx, getState());
 		enterRule(_localctx, 18, RULE_closedStatement);
 		try {
-			setState(111);
+			setState(109);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,6,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(105);
+				setState(102);
 				assignStatement();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(106);
+				setState(103);
 				whileStatement();
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(107);
+				setState(104);
 				ifStatement();
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(108);
+				setState(105);
 				callStatement();
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(109);
+				setState(106);
 				returnStatement();
 				}
 				break;
 			case 6:
 				enterOuterAlt(_localctx, 6);
 				{
-				setState(110);
+				setState(107);
 				blockStatement();
+				}
+				break;
+			case 7:
+				enterOuterAlt(_localctx, 7);
+				{
+				setState(108);
+				letStatement();
 				}
 				break;
 			}
@@ -667,12 +668,14 @@ public class EightBitParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(113);
+			setState(111);
 			id();
-			setState(114);
+			setState(112);
 			match(T__8);
-			setState(115);
+			setState(113);
 			expr();
+			setState(114);
+			match(T__4);
 			}
 		}
 		catch (RecognitionException re) {
@@ -710,15 +713,15 @@ public class EightBitParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(117);
+			setState(116);
 			match(T__9);
-			setState(118);
+			setState(117);
 			match(T__1);
-			setState(119);
+			setState(118);
 			expr();
-			setState(120);
+			setState(119);
 			match(T__2);
-			setState(121);
+			setState(120);
 			closedStatement();
 			}
 		}
@@ -760,24 +763,24 @@ public class EightBitParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(123);
+			setState(122);
 			match(T__10);
-			setState(124);
+			setState(123);
 			match(T__1);
-			setState(125);
+			setState(124);
 			expr();
-			setState(126);
+			setState(125);
 			match(T__2);
-			setState(127);
+			setState(126);
 			closedStatement();
-			setState(130);
+			setState(129);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
 			case 1:
 				{
-				setState(128);
+				setState(127);
 				match(T__11);
-				setState(129);
+				setState(128);
 				closedStatement();
 				}
 				break;
@@ -817,9 +820,9 @@ public class EightBitParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(132);
+			setState(131);
 			match(ID);
-			setState(133);
+			setState(132);
 			arguments();
 			}
 		}
@@ -855,10 +858,12 @@ public class EightBitParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(135);
+			setState(134);
 			match(T__12);
-			setState(136);
+			setState(135);
 			expr();
+			setState(136);
+			match(T__4);
 			}
 		}
 		catch (RecognitionException re) {
@@ -898,7 +903,7 @@ public class EightBitParser extends Parser {
 			match(T__6);
 			setState(140);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__6) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << ID))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__5) | (1L << T__6) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << ID))) != 0)) {
 				{
 				setState(139);
 				closedList();
@@ -959,7 +964,7 @@ public class EightBitParser extends Parser {
 			setState(154);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__6) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << ID))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__5) | (1L << T__6) | (1L << T__9) | (1L << T__10) | (1L << T__12) | (1L << ID))) != 0)) {
 				{
 				{
 				setState(148);
@@ -1765,9 +1770,9 @@ public class EightBitParser extends Parser {
 		"\4\32\t\32\4\33\t\33\4\34\t\34\4\35\t\35\3\2\6\2<\n\2\r\2\16\2=\3\3\3"+
 		"\3\3\3\3\3\3\3\3\4\3\4\5\4G\n\4\3\4\3\4\3\5\3\5\3\5\7\5N\n\5\f\5\16\5"+
 		"Q\13\5\3\6\3\6\3\7\3\7\3\7\5\7X\n\7\3\b\3\b\3\t\3\t\3\t\5\t_\n\t\3\t\3"+
-		"\t\3\t\3\n\3\n\3\n\7\ng\n\n\f\n\16\nj\13\n\3\13\3\13\3\13\3\13\3\13\3"+
-		"\13\5\13r\n\13\3\f\3\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\3\r\3\16\3\16\3\16"+
-		"\3\16\3\16\3\16\3\16\5\16\u0085\n\16\3\17\3\17\3\17\3\20\3\20\3\20\3\21"+
+		"\t\3\t\3\n\6\ne\n\n\r\n\16\nf\3\13\3\13\3\13\3\13\3\13\3\13\3\13\5\13"+
+		"p\n\13\3\f\3\f\3\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\3\r\3\16\3\16\3\16\3\16"+
+		"\3\16\3\16\3\16\5\16\u0084\n\16\3\17\3\17\3\17\3\20\3\20\3\20\3\20\3\21"+
 		"\3\21\5\21\u008f\n\21\3\21\3\21\3\22\3\22\5\22\u0095\n\22\3\22\3\22\5"+
 		"\22\u0099\n\22\7\22\u009b\n\22\f\22\16\22\u009e\13\22\3\23\3\23\3\23\7"+
 		"\23\u00a3\n\23\f\23\16\23\u00a6\13\23\3\24\3\24\3\24\7\24\u00ab\n\24\f"+
@@ -1778,10 +1783,10 @@ public class EightBitParser extends Parser {
 		"\31\u00d9\n\31\3\32\3\32\3\32\3\33\3\33\3\33\3\33\3\33\5\33\u00e3\n\33"+
 		"\3\34\3\34\5\34\u00e7\n\34\3\34\3\34\3\35\3\35\3\35\7\35\u00ee\n\35\f"+
 		"\35\16\35\u00f1\13\35\3\35\2\2\36\2\4\6\b\n\f\16\20\22\24\26\30\32\34"+
-		"\36 \"$&(*,.\60\62\64\668\2\5\4\2\21\23\30\32\3\2 !\3\2\36\37\u00f7\2"+
+		"\36 \"$&(*,.\60\62\64\668\2\5\4\2\21\23\30\32\3\2 !\3\2\36\37\u00f8\2"+
 		";\3\2\2\2\4?\3\2\2\2\6D\3\2\2\2\bJ\3\2\2\2\nR\3\2\2\2\fW\3\2\2\2\16Y\3"+
-		"\2\2\2\20[\3\2\2\2\22c\3\2\2\2\24q\3\2\2\2\26s\3\2\2\2\30w\3\2\2\2\32"+
-		"}\3\2\2\2\34\u0086\3\2\2\2\36\u0089\3\2\2\2 \u008c\3\2\2\2\"\u0092\3\2"+
+		"\2\2\2\20[\3\2\2\2\22d\3\2\2\2\24o\3\2\2\2\26q\3\2\2\2\30v\3\2\2\2\32"+
+		"|\3\2\2\2\34\u0085\3\2\2\2\36\u0088\3\2\2\2 \u008c\3\2\2\2\"\u0092\3\2"+
 		"\2\2$\u009f\3\2\2\2&\u00a7\3\2\2\2(\u00ba\3\2\2\2*\u00bc\3\2\2\2,\u00be"+
 		"\3\2\2\2.\u00c6\3\2\2\2\60\u00d8\3\2\2\2\62\u00da\3\2\2\2\64\u00e2\3\2"+
 		"\2\2\66\u00e4\3\2\2\28\u00ea\3\2\2\2:<\5\4\3\2;:\3\2\2\2<=\3\2\2\2=;\3"+
@@ -1791,16 +1796,16 @@ public class EightBitParser extends Parser {
 		"OP\3\2\2\2P\t\3\2\2\2QO\3\2\2\2RS\7\"\2\2S\13\3\2\2\2TX\5\20\t\2UX\5\24"+
 		"\13\2VX\5\16\b\2WT\3\2\2\2WU\3\2\2\2WV\3\2\2\2X\r\3\2\2\2YZ\7\7\2\2Z\17"+
 		"\3\2\2\2[\\\7\b\2\2\\^\7\t\2\2]_\5\22\n\2^]\3\2\2\2^_\3\2\2\2_`\3\2\2"+
-		"\2`a\7\n\2\2ab\5\24\13\2b\21\3\2\2\2ch\5\26\f\2de\7\7\2\2eg\5\26\f\2f"+
-		"d\3\2\2\2gj\3\2\2\2hf\3\2\2\2hi\3\2\2\2i\23\3\2\2\2jh\3\2\2\2kr\5\26\f"+
-		"\2lr\5\30\r\2mr\5\32\16\2nr\5\34\17\2or\5\36\20\2pr\5 \21\2qk\3\2\2\2"+
-		"ql\3\2\2\2qm\3\2\2\2qn\3\2\2\2qo\3\2\2\2qp\3\2\2\2r\25\3\2\2\2st\5\n\6"+
-		"\2tu\7\13\2\2uv\5$\23\2v\27\3\2\2\2wx\7\f\2\2xy\7\4\2\2yz\5$\23\2z{\7"+
-		"\5\2\2{|\5\24\13\2|\31\3\2\2\2}~\7\r\2\2~\177\7\4\2\2\177\u0080\5$\23"+
-		"\2\u0080\u0081\7\5\2\2\u0081\u0084\5\24\13\2\u0082\u0083\7\16\2\2\u0083"+
-		"\u0085\5\24\13\2\u0084\u0082\3\2\2\2\u0084\u0085\3\2\2\2\u0085\33\3\2"+
-		"\2\2\u0086\u0087\7\"\2\2\u0087\u0088\5\66\34\2\u0088\35\3\2\2\2\u0089"+
-		"\u008a\7\17\2\2\u008a\u008b\5$\23\2\u008b\37\3\2\2\2\u008c\u008e\7\t\2"+
+		"\2`a\7\n\2\2ab\5\24\13\2b\21\3\2\2\2ce\5\26\f\2dc\3\2\2\2ef\3\2\2\2fd"+
+		"\3\2\2\2fg\3\2\2\2g\23\3\2\2\2hp\5\26\f\2ip\5\30\r\2jp\5\32\16\2kp\5\34"+
+		"\17\2lp\5\36\20\2mp\5 \21\2np\5\20\t\2oh\3\2\2\2oi\3\2\2\2oj\3\2\2\2o"+
+		"k\3\2\2\2ol\3\2\2\2om\3\2\2\2on\3\2\2\2p\25\3\2\2\2qr\5\n\6\2rs\7\13\2"+
+		"\2st\5$\23\2tu\7\7\2\2u\27\3\2\2\2vw\7\f\2\2wx\7\4\2\2xy\5$\23\2yz\7\5"+
+		"\2\2z{\5\24\13\2{\31\3\2\2\2|}\7\r\2\2}~\7\4\2\2~\177\5$\23\2\177\u0080"+
+		"\7\5\2\2\u0080\u0083\5\24\13\2\u0081\u0082\7\16\2\2\u0082\u0084\5\24\13"+
+		"\2\u0083\u0081\3\2\2\2\u0083\u0084\3\2\2\2\u0084\33\3\2\2\2\u0085\u0086"+
+		"\7\"\2\2\u0086\u0087\5\66\34\2\u0087\35\3\2\2\2\u0088\u0089\7\17\2\2\u0089"+
+		"\u008a\5$\23\2\u008a\u008b\7\7\2\2\u008b\37\3\2\2\2\u008c\u008e\7\t\2"+
 		"\2\u008d\u008f\5\"\22\2\u008e\u008d\3\2\2\2\u008e\u008f\3\2\2\2\u008f"+
 		"\u0090\3\2\2\2\u0090\u0091\7\n\2\2\u0091!\3\2\2\2\u0092\u0094\5\24\13"+
 		"\2\u0093\u0095\7\7\2\2\u0094\u0093\3\2\2\2\u0094\u0095\3\2\2\2\u0095\u009c"+
@@ -1834,7 +1839,7 @@ public class EightBitParser extends Parser {
 		"\3\2\2\2\u00e6\u00e7\3\2\2\2\u00e7\u00e8\3\2\2\2\u00e8\u00e9\7\5\2\2\u00e9"+
 		"\67\3\2\2\2\u00ea\u00ef\5$\23\2\u00eb\u00ec\7\6\2\2\u00ec\u00ee\5$\23"+
 		"\2\u00ed\u00eb\3\2\2\2\u00ee\u00f1\3\2\2\2\u00ef\u00ed\3\2\2\2\u00ef\u00f0"+
-		"\3\2\2\2\u00f09\3\2\2\2\u00f1\u00ef\3\2\2\2\31=FOW^hq\u0084\u008e\u0094"+
+		"\3\2\2\2\u00f09\3\2\2\2\u00f1\u00ef\3\2\2\2\31=FOW^fo\u0083\u008e\u0094"+
 		"\u0098\u009c\u00a4\u00ac\u00b5\u00ba\u00c3\u00ca\u00d5\u00d8\u00e2\u00e6"+
 		"\u00ef";
 	public static final ATN _ATN =

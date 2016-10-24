@@ -1,11 +1,11 @@
 fun compare(x, y){
-   if( x > y){ return true;}
-   else{ return false;}
+   if( x > y) return true;
+   else return false;
 }
 
 fun main(){
-   PrintS("10>5=");
-   PrintB(compare(10, 5));
-   PrintS(" 5>10=");
-   PrintB(compare(5, 10));
+   print_string("10>5=");
+   print_boolean(compare(10, 5));
+   print_string(" 5>10=")
+   print_boolean(compare(5, 10));
 }

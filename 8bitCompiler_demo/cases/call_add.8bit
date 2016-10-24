@@ -3,7 +3,7 @@ fun add(x, y){
 }
 
 fun main(){
-   PrintS("10+56=");
-   PrintN(add(10, 56));
+   print_string("10+56=")
+   print_number(add(10, 56));
 
 }
