@@ -11,8 +11,8 @@
 
 
 fun main()
-{	PrintS("JAJA CABRO");
-	PrintS(" ");
-	PrintN(10);
-	PrintB(true);
+{	print_string("JAJA CABRO");
+	print_string(" ");
+	print_number(10);
+	print_boolean(true);
 }
