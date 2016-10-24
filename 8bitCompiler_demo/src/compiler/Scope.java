@@ -1,3 +1,16 @@
+
+
+/*
+* 			INTEGRANTES:
+*
+*	ALEXANDRA AGUILAR NAJERA	304780037	1 pm
+*	MASIEL MORA RODRIGUEZ		604190071	8 am
+* 	BRYHAN RODRIGUEZ MORA		115420325	1 pm
+*	JEAN CARLO VARGAS ZUÑIGA	402220474	1 pm
+*
+*/
+
+
 package eightBit.compile;
 
 import java.util.*;
@@ -54,19 +67,20 @@ public class Scope
 		return (e != null)?e.has(k) : false;
 	}
 	
-	public void genDataArea(PrintStream out)
+	/*public void genDataArea(PrintStream out)
 	{
 		out.println(";.data_Area:\n.UNDEF: DB 255\n.boolean_true: DB \"TRUE\" \n\tDB 0\n.boolean_false: DB \"FALSE\"\n\tDB 0");
 		scopes.forEach( (k,v) -> {out.println(";"+v.getId()+"_Data_Area"+"\n"+v.getId() + "_Data_Area:");v.genCode(out);});
-	}
-	public void genDataArea()
+	}*/
+	
+	/*public void genDataArea()
 	{
 		this.genDataArea(System.out);
-	}
+	}*/
 	
 	public String getValueCurrent(String k)
 	{
-		System.err.println("Solicitando " + k + " Current En Scope Con resultado: " + scopes.get(current).get(k));
+		//System.err.println("Solicitando " + k + " Current En Scope Con resultado: " + scopes.get(current).get(k));
 		return scopes.get(current).get(k);
 	}
 	
@@ -121,11 +135,11 @@ public class Scope
 		}
 		
 		
-		public void genCode(PrintStream out)
+		/*public void genCode(PrintStream out)
 		{			
 			symbolTable.forEach( (k,v) -> out.println("." + v + "_" + k + ": DB 0"));
 			stringPool.forEach( (k,v) -> out.println( k +": DB "+v+"\n\t DB 0"));
-			}
+			}*/
 	}
 }
 

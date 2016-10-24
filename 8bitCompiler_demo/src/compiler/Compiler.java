@@ -2,10 +2,23 @@
  loriacarlos@gmail.com EIF400 II-2016
  EightBit starting compiler
 */
+
+/*
+* 			INTEGRANTES:
+*
+*	ALEXANDRA AGUILAR NAJERA	304780037	1 pm
+*	MASIEL MORA RODRIGUEZ		604190071	8 am
+* 	BRYHAN RODRIGUEZ MORA		115420325	1 pm
+*	JEAN CARLO VARGAS ZUÑIGA	402220474	1 pm
+*
+*/
+
+
+
 package eightBit.compile;
 
 
-import eightBit.js.*;
+import eightBit.asm.*;
 
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -14,16 +27,16 @@ import java.util.*;
 import java.util.stream.*;
 
 
-public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
-   protected JSAst program;
+public class Compiler extends EightBitBaseVisitor<ASMAst> implements ASMEmiter{
+   protected ASMAst program;
    protected Scope symbolTable = new Scope();
-   public JSAst getProgram(){
+   public ASMAst getProgram(){
 	   return this.program;
    }
-   protected List<JSAst> statements = new ArrayList<>();
+   protected List<ASMAst> statements = new ArrayList<>();
    
    public void genCode(){
-		((JSProgram)this.program).genData();
+		((ASMProgram)this.program).genData();
 	   System.out.println(";.codeArea:");
 		this.program.genCode();
 		
@@ -43,75 +56,72 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
 		System.out.println(".end_print_boolean:\nCALL .print_string\nPOP A\nPOP C\nPUSH .UNDEF\nPUSH C\nRET");
 	*/
  }
-   public JSAst compile(ParseTree tree){
+   public ASMAst compile(ParseTree tree){
       return visit(tree);
    }
    @Override
-   public JSAst visitEightProgram(EightBitParser.EightProgramContext ctx){
+   public ASMAst visitEightProgram(EightBitParser.EightProgramContext ctx){
 	   ctx.eightFunction().stream()
 	                      .forEach( fun -> visit(fun) );
 						  
-		JSProgram p = ((JSProgram)PROGRAM(this.statements));
+		ASMProgram p = ((ASMProgram)PROGRAM(this.statements));
 		p.setDataArea(symbolTable.getCollectedData());
 		this.program = p;
 	   return this.program;
    }
    
    @Override
-   public JSAst visitEightFunction(EightBitParser.EightFunctionContext ctx){
+   public ASMAst visitEightFunction(EightBitParser.EightFunctionContext ctx){
       
       symbolTable.newScope(ctx.id().getText());	// se agrega la funcion al scope	  
-	  JSId id = (JSId)visit(ctx.id());	  
-	  JSAst f = visit(ctx.formals());	  
-	  List<JSAst> fb = ((JSFormals)f).getMembers();	  
+	  ASMId id = (ASMId)visit(ctx.id());	  
+	  ASMAst f = visit(ctx.formals());	  
+	  List<ASMAst> fb = ((ASMFormals)f).getMembers();	  
 	  fb.stream().forEach(e -> {
-									JSId idf = ((JSId)e);
+									ASMId idf = ((ASMId)e);
 									String v = idf.getValue();
 									idf.setValue(symbolTable.add(v));
 								});	  
-	  JSAst body = visit(ctx.funBody());
-	  if((JSBlock.class.isInstance(body)))
-		  ((JSBlock)body).setOwner(id);
-	  JSAst function = FUNCTION(id, f, body);
+	  ASMAst body = visit(ctx.funBody());
+	  ASMAst function = FUNCTION(id, f, body);
 	  this.statements.add(function);
 	  return function;
    }
    
    @Override
-   public JSAst visitEmptyStatement(EightBitParser.EmptyStatementContext ctx){
+   public ASMAst visitEmptyStatement(EightBitParser.EmptyStatementContext ctx){
       return EMPTY();
 	                
    }
    
    @Override
-   public JSAst visitReturnStatement(EightBitParser.ReturnStatementContext ctx){
-	   JSAst ex = visit(ctx.expr());
-      return RET(ex);
+   public ASMAst visitReturnStatement(EightBitParser.ReturnStatementContext ctx){
+	   ASMAst ex = visit(ctx.expr());
+      return RET(ex,symbolTable.getCurrent());
 	                
    }
    
    @Override
-   public JSAst visitAssignStatement(EightBitParser.AssignStatementContext ctx){
-	   JSAst id = visit(ctx.id());
+   public ASMAst visitAssignStatement(EightBitParser.AssignStatementContext ctx){
+	   ASMAst id = visit(ctx.id());
 	  return ASSIGN(id, visit(ctx.expr()));
 	                
    }
    @Override
-   public JSAst visitBlockStatement(EightBitParser.BlockStatementContext ctx){
+   public ASMAst visitBlockStatement(EightBitParser.BlockStatementContext ctx){
 	  EightBitParser.ClosedListContext closedList = ctx.closedList();
       return (closedList == null ) ? BLOCK() 
 	                               : visit(closedList);
    }
    @Override
-   public JSAst visitClosedList(EightBitParser.ClosedListContext ctx){					  
+   public ASMAst visitClosedList(EightBitParser.ClosedListContext ctx){					  
 					   return  BLOCK(ctx.closedStatement().stream()
 	                                                      .map( c -> 
 																	{
-																		JSAst e = visit(c);
-																		if(JSAssign.class.isInstance(e))
-																		{
-																			
-																			JSId id = ((JSId)((JSAssign)e).getLeft());
+																		ASMAst e = visit(c);
+																		if(ASMAssign.class.isInstance(e))
+																		{																			
+																			ASMId id = ((ASMId)((ASMAssign)e).getLeft());
 																			id.setValue(symbolTable.getValueCurrent(id.getValue()));																			
 																		}
 																		return e;
@@ -121,50 +131,42 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
 	                
    }
    @Override
-   public JSAst visitFormals(EightBitParser.FormalsContext ctx){
+   public ASMAst visitFormals(EightBitParser.FormalsContext ctx){
 	   EightBitParser.IdListContext idList = ctx.idList();
 	   return (idList == null ) ? FORMALS()
 	                            : visit(idList);
    }
    
    @Override
-   public JSAst visitWhileStatement(EightBitParser.WhileStatementContext ctx){
-	   JSAst exp = visit(ctx.expr());
-	   JSAst stmt = visit(ctx.closedStatement());
-	   if((JSBlock.class.isInstance(stmt)))
-	   {
-		   ((JSBlock)stmt).setOwner(ID(symbolTable.getCurrent()));
-	   }
+   public ASMAst visitWhileStatement(EightBitParser.WhileStatementContext ctx){
+	   ASMAst exp = visit(ctx.expr());
+	   ASMAst stmt = visit(ctx.closedStatement());
 		  
 	   return WHILE(exp, stmt);
    }
    
       @Override
-   public JSAst visitLetStatement(EightBitParser.LetStatementContext ctx){
-	  JSAst st = visit(ctx.assignStmtList());
+   public ASMAst visitLetStatement(EightBitParser.LetStatementContext ctx){
+	  ASMAst st = visit(ctx.assignStmtList());
 	  
 
 	  
-	  List<JSAst> s = ((JSBlock)st).getMembers();
+	  List<ASMAst> s = ((ASMBlock)st).getMembers();
 	  s.stream().forEach(e -> 
 							{
-								JSAssign ass = ((JSAssign)e);
+								ASMAssign ass = ((ASMAssign)e);
 											
-								JSAtom at = ((JSAtom)ass.getLeft());
+								ASMAtom at = ((ASMAtom)ass.getLeft());
 								String val = ((String)at.getValue());
 								at.setValue(((String)symbolTable.add(val)));
 							});
 							
-			  JSAst stat = visit(ctx.closedStatement());
-			  if((JSBlock.class.isInstance(stat)))
-		  ((JSBlock)stat).setOwner(ID(symbolTable.getCurrent()));
+			  ASMAst stat = visit(ctx.closedStatement());
 	  return LET(s,stat);
    }
    
     @Override
-   public JSAst visitAssignStmtList(EightBitParser.AssignStmtListContext ctx){
-	  
-		//visit(ctx.assignStatement().stream());
+   public ASMAst visitAssignStmtList(EightBitParser.AssignStmtListContext ctx){
 		return  BLOCK(ctx.assignStatement().stream()
 						     .map( c ->	visit(c))
 						     .collect(Collectors.toList()));
@@ -172,49 +174,34 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
    } 
    
     @Override
-   public JSAst visitIfStatement(EightBitParser.IfStatementContext ctx){
-	   JSAst exp = visit(ctx.expr());	   
-	   List<JSAst> ar = ctx.closedStatement().stream()
+   public ASMAst visitIfStatement(EightBitParser.IfStatementContext ctx){
+	   ASMAst exp = visit(ctx.expr());	   
+	   List<ASMAst> ar = ctx.closedStatement().stream()
 	                                                .map( c -> visit(c))
-										            .collect(Collectors.toList());
-													
-		JSAst a = ar.get(0);
-		if((JSBlock.class.isInstance(a)))
-		  ((JSBlock)a).setOwner(ID(symbolTable.getCurrent()));
-		JSAst b = (ar.size()>1)? ar.get(1): null;
-		if( b != null && (JSBlock.class.isInstance(a)))
-		  ((JSBlock)b).setOwner(ID(symbolTable.getCurrent()));
+										            .collect(Collectors.toList());													
+		ASMAst a = ar.get(0);	  
+		ASMAst b = (ar.size()>1)? ar.get(1): null;	  
 	   return IF(exp, a, b);
    }
    
    
    
    @Override
-   public JSAst visitCallStatement(EightBitParser.CallStatementContext ctx){
-	   JSAst id = ID(ctx.ID().getText());
-	   JSAst tmp = visit(ctx.arguments());
-	   List<JSAst> arg = ((JSBlock)tmp).getMembers();
-	   /*arg.stream().forEach(e -> 
-								{
-									if(JSId.class.isInstance(e))
-									{
-										((JSId)e).setValue(symbolTable.getValueCurrent(((JSId)e).getValue()));
-										System.err.println(((JSId)e).getValue());
-									}
-										
-								}
-							);*/
+   public ASMAst visitCallStatement(EightBitParser.CallStatementContext ctx){
+	   ASMAst id = ID(ctx.ID().getText());
+	   ASMAst tmp = visit(ctx.arguments());
+	   List<ASMAst> arg = ((ASMBlock)tmp).getMembers();
 	   return CALL(id, arg);
    }
    
    
    @Override
-   public JSAst visitArguments(EightBitParser.ArgumentsContext ctx){
+   public ASMAst visitArguments(EightBitParser.ArgumentsContext ctx){
 	   return  (ctx.args() != null)? visit(ctx.args()) : BLOCK();	
    } 
    
    @Override
-   public JSAst visitArgs(EightBitParser.ArgsContext ctx){
+   public ASMAst visitArgs(EightBitParser.ArgsContext ctx){
 	   return  BLOCK(ctx.expr().stream()
 						     .map( c -> visit(c))
 						     .collect(Collectors.toList()));
@@ -222,22 +209,22 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
    } 
    
    @Override
-   public JSAst visitIdList(EightBitParser.IdListContext ctx){
+   public ASMAst visitIdList(EightBitParser.IdListContext ctx){
 	   return  FORMALS(ctx.id().stream()
 						     .map( c -> visit(c))
 						     .collect(Collectors.toList()));
 	
    } 
    @Override
-   public JSAst visitId(EightBitParser.IdContext ctx){
+   public ASMAst visitId(EightBitParser.IdContext ctx){
 	  return  ID(ctx.ID().getText());
    }
    @Override
-    public JSAst visitArithOperation(EightBitParser.ArithOperationContext ctx) {
+    public ASMAst visitArithOperation(EightBitParser.ArithOperationContext ctx) {
 	   if (ctx.oper == null)
 		   return visit(ctx.arithMonom().get(0));
-	   JSAst oper = ( ctx.oper.getType() == EightBitParser.ADD ) ? ADD : MINUS;
-       List<JSAst> exprs = ctx.arithMonom().stream()
+	   ASMAst oper = ( ctx.oper.getType() == EightBitParser.ADD ) ? ADD : MINUS;
+       List<ASMAst> exprs = ctx.arithMonom().stream()
 	                                       .map( c -> visit(c) )
 										   .collect(Collectors.toList());
 										   
@@ -250,8 +237,8 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
 	   
     }
     @Override
-    public JSAst visitArithMonom(EightBitParser.ArithMonomContext ctx){
-		JSAst left = visit(ctx.arithSingle());
+    public ASMAst visitArithMonom(EightBitParser.ArithMonomContext ctx){
+		ASMAst left = visit(ctx.arithSingle());
 		return (ctx.operTDArithSingle() == null) 
 		       ? left
 		       :ctx.operTDArithSingle().stream()
@@ -260,40 +247,40 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
 									                      -> FOLD_LEFT(opers , expr));
    } 
    @Override
-   public JSAst visitOperTDArithSingle(EightBitParser.OperTDArithSingleContext ctx){
-	   JSAst oper = ( ctx.oper.getType() == EightBitParser.MUL ) ? MUL : DIV;
-	   JSAst right = visit(ctx.arithSingle());
+   public ASMAst visitOperTDArithSingle(EightBitParser.OperTDArithSingleContext ctx){
+	   ASMAst oper = ( ctx.oper.getType() == EightBitParser.MUL ) ? MUL : DIV;
+	   ASMAst right = visit(ctx.arithSingle());
 	   return OPERATION(oper, NULL, right);
    }
    @Override
-   public JSAst visitArithIdSingle(EightBitParser.ArithIdSingleContext ctx){
+   public ASMAst visitArithIdSingle(EightBitParser.ArithIdSingleContext ctx){
 	   if(ctx.id() != null && ctx.arguments() != null)
 	   {
-			JSAst id = visit(ctx.id());
-			JSAst ar =  visit(ctx.arguments());
-			List<JSAst> args =  ((JSBlock)ar).getMembers();
+			ASMAst id = visit(ctx.id());
+			ASMAst ar =  visit(ctx.arguments());
+			List<ASMAst> args =  ((ASMBlock)ar).getMembers();
 			return CALL(id ,args);
 	   }
 	   else  
 	   {
-		   JSAst ids = visit(ctx.id());
-		   ((JSId)ids).setValue(symbolTable.getValueCurrent(((JSId)ids).getValue()));
+		   ASMAst ids = visit(ctx.id());
+		   ((ASMId)ids).setValue(symbolTable.getValueCurrent(((ASMId)ids).getValue()));
 			return ids;
 	   }
    }
    
    
    @Override
-    public JSAst visitRelOperation(EightBitParser.RelOperationContext ctx) {
+    public ASMAst visitRelOperation(EightBitParser.RelOperationContext ctx) {
 	   if (ctx.relOperator() == null)
 		   return visit(ctx.arithOperation().get(0));
 	   else
 	   {
-		    List<JSAst> arr = ctx.relOperator().stream()
+		    List<ASMAst> arr = ctx.relOperator().stream()
 								.map( c -> visit(c))
 								.collect(Collectors.toList());
-		JSAst oper = (arr.size()>0)? arr.get(0): ID(">"); 
-		List<JSAst> exprs = ctx.arithOperation().stream()
+		ASMAst oper = (arr.size()>0)? arr.get(0): ID(">"); 
+		List<ASMAst> exprs = ctx.arithOperation().stream()
 	                                       .map( c -> visit(c))
 										   .collect(Collectors.toList());							  
 	   return exprs.stream()
@@ -307,29 +294,29 @@ public class Compiler extends EightBitBaseVisitor<JSAst> implements JSEmiter{
    
    
      @Override
-   public JSAst visitRelOperator(EightBitParser.RelOperatorContext ctx){
+   public ASMAst visitRelOperator(EightBitParser.RelOperatorContext ctx){
       return ID(ctx.getText());
    }
    
    
    
    @Override
-   public JSAst visitExprNum(EightBitParser.ExprNumContext ctx){
+   public ASMAst visitExprNum(EightBitParser.ExprNumContext ctx){
       return NUM(Integer.valueOf(ctx.NUMBER().getText()));
    }
      
    @Override
-   public JSAst visitExprString(EightBitParser.ExprStringContext ctx){
+   public ASMAst visitExprString(EightBitParser.ExprStringContext ctx){
 	  return STRING(symbolTable.addString(ctx.STRING().getText()));
    }
    
    @Override
-   public JSAst visitExprTrue(EightBitParser.ExprTrueContext ctx){
+   public ASMAst visitExprTrue(EightBitParser.ExprTrueContext ctx){
       return TRUE;
    }
    
    @Override
-   public JSAst visitExprFalse(EightBitParser.ExprFalseContext ctx){
+   public ASMAst visitExprFalse(EightBitParser.ExprFalseContext ctx){
       return FALSE;
    }
    
